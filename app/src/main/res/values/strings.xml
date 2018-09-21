@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">PostcardCollection</string>
+    <string name="title_activity_login">Postcard Collection</string>
+    <string name="title_activity_main">Postcard Collection</string>
+
+    <!-- Tela inicial -->
+    <string name="welcome">Welcome!</string>
+    <string name="msg_login">Log in to see your postcard collection and manage your swaps.</string>
+    <string name="msg_sign_up">Sign up to start managing your postcard collection digitally.</string>
+    <string name="create_account">Create an account</string>
+    <string name="existing_account">Login with an existing account</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_pwd_confirm">Confirm password</string>
+    <string name="prompt_name">Name</string>
+    <string name="action_log_in">Log in</string>
+    <string name="msg_dont_have_acc">Don\'t have an account?</string>
+    <string name="msg_have_acc">Have an account?</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="action_log_in_short">Log in</string>
+    <string name="action_sign_out">Sign out</string>
+    <string name="action_verify_email">Verify Email</string>
+
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short, type at least 6 characters</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_password_differ">Passwords entered do not match</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="registration_failure_user_exists">Registration failed. User already exists!</string>
+    <string name="registration_failure">Registration failed.</string>
+    <string name="authentication_failure_wrong_credentials">Invalid email or password.</string>
+    <string name="authentication_failure">Authentication failed.</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+</resources>

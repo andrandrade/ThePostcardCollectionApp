@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "481029115255",
+    "firebase_url": "https://postcardcollection-2018.firebaseio.com",
+    "project_id": "postcardcollection-2018",
+    "storage_bucket": "postcardcollection-2018.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481029115255:android:53973abbe4eecb4f",
+        "android_client_info": {
+          "package_name": "br.edu.ifspsaocarlos.sdm.postcardcollection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "481029115255-genq16opm7gsh7429liutbon8bavti8d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBG1j2mVAbL8xm_AQWMDYuTp5I9cMOHxAQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
