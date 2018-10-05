@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -33,9 +32,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "PostcardApp";
     private FirebaseAuth mAuth;
-
-    /* Keep track of the login task to ensure we can cancel it if requested. */
-    private UserAuthTask mAuthTask = null;
 
     // UI references
     private AutoCompleteTextView mEmailView;
@@ -76,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Autenticação
+        // Inicializando a Autenticação Firebase..
         this.mAuth = FirebaseAuth.getInstance();
 
     }
@@ -92,29 +88,63 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUI(FirebaseUser currentUser) {
-        Toast.makeText(this, "Usuario logado ", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
-    }
-
     // Abre a tela de criação de conta
     private void createAccount() {
         startActivity(new Intent(this, CreateAccountActivity.class));
         finish();
     }
+    /* Mostra ou esconde o Spinner de progresso e faz o contrário com o form de Login */
+    private void showProgress(final boolean show) {
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+    }
 
     private void signIn() {
-        if (!validateForm() || (mAuthTask != null)) {
+        if (!validateForm()) {
             return;
         }
-        // Inicia a tarefa AsyncTask em background para tentar o Login
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
 
-        Log.d(TAG, "signIn:" + email);
-        mAuthTask = new UserAuthTask(email, password, 1);
-        mAuthTask.execute((Void) null);
+        final String mEmail = mEmailView.getText().toString();
+        String mPassword = mPasswordView.getText().toString();
+
+        Log.d(TAG, "Trying signIn:" + mEmail);
+        showProgress(true);
+
+        Task<AuthResult> task = mAuth.signInWithEmailAndPassword(mEmail, mPassword);
+        task.addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Sign in bem sucedido...
+                    Log.d(TAG, "signInWithEmail:success");
+                    FirebaseUser user = task.getResult().getUser();
+                    if (user != null)
+                        updateUI(user); // encerra esta activity
+
+                } else {
+                    showProgress(false);
+                    if ((task.getException() instanceof FirebaseAuthInvalidUserException) ||
+                        (task.getException() instanceof FirebaseAuthInvalidCredentialsException) ) {
+                        // Se falhou por login não encontrado
+                        Log.w(TAG, "signInWithEmail:invalidAuth", task.getException());
+                        //Toast.makeText(LoginActivity.this, getString(R.string.auth_failure_wrong_credentials),Toast.LENGTH_SHORT).show();
+                        mPasswordView.setError(getString(R.string.auth_failure_wrong_credentials));
+                        mPasswordView.requestFocus();
+                    } else {
+                        // Se o login falhou por erro alheio ao usuario
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        Toast.makeText(LoginActivity.this, getString(R.string.auth_failure), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
+
+    private void updateUI(FirebaseUser currentUser) {
+        Toast.makeText(this, "Usuario logado ", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     // Testa a consistência dos dados (email inválido, campos em branco) e mostra erros
@@ -154,18 +184,13 @@ public class LoginActivity extends AppCompatActivity {
         return !cancel;
     }
 
-    /* Mostra ou esconde o Spinner de progresso e faz o contrário com o form de Login */
-    private void showProgress(final boolean show) {
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-    }
-
     /* AsyncTask de Registro para autenticar o usuário */
+    /*
     public class UserAuthTask extends AsyncTask<Void, Void, Boolean> {
         private final String mEmail;
         private final String mPassword;
         private final int mTask;
-        private final boolean result;
+        private final Boolean result;
         // 0 = register new credentials
         // 1 = login with existing credentials
 
@@ -187,17 +212,19 @@ public class LoginActivity extends AppCompatActivity {
             if (mTask == 0) {
                 // create User
                 mAuth.createUserWithEmailAndPassword(mEmail, mPassword)
-                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
 
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Cadastro e autenticação bem sucedidos...
                                 Log.d(TAG, "createUserWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
+                                //FirebaseUser user = mAuth.getCurrentUser();
+                                FirebaseUser user = task.getResult().getUser();
                                 updateUI(user);
 
                             } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                Log.w(TAG, "createUserWithEmail:failed", task.getException());
                                 Toast.makeText(LoginActivity.this, getString(R.string.registration_failure_user_exists), Toast.LENGTH_LONG).show();
                             } else {
                                 // Cadastro falhou...
@@ -208,27 +235,30 @@ public class LoginActivity extends AppCompatActivity {
                     });
             } else {
                 // SignIn user
-                mAuth.signInWithEmailAndPassword(mEmail, mPassword)
-                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                Task<AuthResult> task = mAuth.signInWithEmailAndPassword(mEmail, mPassword);
+                task.addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
 
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in bem sucedido...
                                 Log.d(TAG, "signInWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                updateUI(user);
+                                //FirebaseUser user = mAuth.getCurrentUser();
+                                FirebaseUser user = task.getResult().getUser();
+
+                                if (user != null)
+                                    updateUI(user);
 
                             } else if (task.getException() instanceof FirebaseAuthInvalidUserException ||
                                     task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
 
                                 // Se falhou por login não encontrado
                                 Log.w(TAG, "signInWithEmail:invalidAuth", task.getException());
-                                Toast.makeText(LoginActivity.this, getString(R.string.authentication_failure_wrong_credentials),Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, getString(R.string.auth_failure_wrong_credentials),Toast.LENGTH_SHORT).show();
                             } else {
                                 // Se o login falhou por erro alheio ao usuario
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(LoginActivity.this, getString(R.string.authentication_failure), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, getString(R.string.auth_failure), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -239,8 +269,8 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
             if (!success) {
+                showProgress(false);
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
@@ -251,6 +281,6 @@ public class LoginActivity extends AppCompatActivity {
             mAuthTask = null;
             showProgress(false);
         }
-    }
+    }*/
 }
 
