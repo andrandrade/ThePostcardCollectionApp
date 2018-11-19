@@ -1,7 +1,6 @@
-package br.edu.ifspsaocarlos.sdm.postcardcollection.View;
+package br.edu.ifspsaocarlos.sdm.postcardcollection.view.login;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -21,11 +20,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
 import br.edu.ifspsaocarlos.sdm.postcardcollection.R;
-import br.edu.ifspsaocarlos.sdm.postcardcollection.Utils.FieldValidUtils;
+import br.edu.ifspsaocarlos.sdm.postcardcollection.utils.FieldValidUtils;
+import br.edu.ifspsaocarlos.sdm.postcardcollection.view.MainActivity;
 
 /*** A login screen that offers login via email/password. */
 public class LoginActivity extends AppCompatActivity {
@@ -74,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // Inicializando a Autenticação Firebase..
         this.mAuth = FirebaseAuth.getInstance();
-
     }
 
     public void onClick(View v) {

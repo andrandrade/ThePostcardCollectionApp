@@ -1,4 +1,4 @@
-package br.edu.ifspsaocarlos.sdm.postcardcollection.View;
+package br.edu.ifspsaocarlos.sdm.postcardcollection.view;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -13,19 +13,19 @@ import android.widget.FrameLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
-import br.edu.ifspsaocarlos.sdm.postcardcollection.AddItemFragment;
-import br.edu.ifspsaocarlos.sdm.postcardcollection.CollectionFragment;
-import br.edu.ifspsaocarlos.sdm.postcardcollection.DashboardFragment;
 import br.edu.ifspsaocarlos.sdm.postcardcollection.R;
+import br.edu.ifspsaocarlos.sdm.postcardcollection.view.login.LoginActivity;
+import br.edu.ifspsaocarlos.sdm.postcardcollection.view.dummy.DummyContent;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PostcardFragment.OnListFragmentInteractionListener {
 
     private FirebaseAuth mAuth;
     static public FirebaseUser currentUser;
     private FrameLayout mMainFrame;
-    Fragment collectionFragment = new CollectionFragment();
-    Fragment addItemFragment = new AddItemFragment();
+    Fragment collectionFragment = new PostcardFragment();
+    Fragment addItemFragment = new AddPostcardFragment();
     Fragment dashboardFragment = new DashboardFragment();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // se já está logado, continua nesta tela
             //mTextMessage.setText(getString(R.string.title_home) + " User: " + currentUser.getEmail());
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         }
     }
 
@@ -92,5 +93,10 @@ public class MainActivity extends AppCompatActivity {
         // TODO: oferecer SignOut ao usuário em algum lugar
         //this.mAuth.signOut();
         super.onStop();
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
     }
 }

@@ -1,4 +1,4 @@
-package br.edu.ifspsaocarlos.sdm.postcardcollection.Utils;
+package br.edu.ifspsaocarlos.sdm.postcardcollection.utils;
 
 public class FieldValidUtils {
 

@@ -39,4 +39,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="click_to_add_photo">Click to open camera</string>
+    <string name="postcard_picture">Postcard picture</string>
 </resources>

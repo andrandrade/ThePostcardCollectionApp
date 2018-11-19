@@ -1,7 +1,6 @@
-package br.edu.ifspsaocarlos.sdm.postcardcollection.View;
+package br.edu.ifspsaocarlos.sdm.postcardcollection.view.login;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -19,14 +18,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 
 import br.edu.ifspsaocarlos.sdm.postcardcollection.R;
-import br.edu.ifspsaocarlos.sdm.postcardcollection.Utils.SessionUtils;
-import br.edu.ifspsaocarlos.sdm.postcardcollection.Utils.FieldValidUtils;
+import br.edu.ifspsaocarlos.sdm.postcardcollection.utils.SessionUtils;
+import br.edu.ifspsaocarlos.sdm.postcardcollection.utils.FieldValidUtils;
+import br.edu.ifspsaocarlos.sdm.postcardcollection.view.MainActivity;
 
 /*** A sign up screen that offers authentication via email/password. */
 public class CreateAccountActivity extends AppCompatActivity {
@@ -35,7 +33,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     // UI references
-    private EditText mName;
+    private EditText mNameView;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mPasswordConfirmView;
@@ -51,12 +49,12 @@ public class CreateAccountActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.signup_form);
         mProgressView = findViewById(R.id.login_progress2);
 
-        mName = findViewById(R.id.person_name);
+        mNameView = findViewById(R.id.person_name);
         mEmailView = findViewById(R.id.email2);
         mPasswordView = findViewById(R.id.password2);
         mPasswordConfirmView = findViewById(R.id.password_confirm);
 
-        mName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mNameView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_NEXT) {
@@ -137,7 +135,8 @@ public class CreateAccountActivity extends AppCompatActivity {
             return;
         }
 
-        final String mEmail = mEmailView.getText().toString();
+        String mName = mNameView.getText().toString();
+        String mEmail = mEmailView.getText().toString();
         String mPassword = mPasswordView.getText().toString();
 
         Log.d(TAG, "Trying createAccount:" + mEmail);
@@ -152,6 +151,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                     // Cadastro e autenticação bem sucedidos...
                     Log.d(TAG, "createUserWithEmail:success");
                     FirebaseUser user = task.getResult().getUser();
+                    // TODO: salvar o nome do usuário no bd
                     if (user != null)
                         updateUI(user);
 
@@ -172,7 +172,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     // Testa a consistência dos dados (email inválido, campos em branco) e mostra erros
     boolean validateForm() {
         // Resetando tudo para começar...
-        mName.setError(null);
+        mNameView.setError(null);
         mEmailView.setError(null);
         mPasswordView.setError(null);
         mPasswordConfirmView.setError(null);
@@ -180,7 +180,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         boolean cancel = false;
 
         // Pega os valores informados pelo usuário - Email e Senha
-        String name = mName.getText().toString();
+        String name = mNameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String confPassword = mPasswordConfirmView.getText().toString();
@@ -212,8 +212,8 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         // Verifica se NOME é vazio
         if (TextUtils.isEmpty(name)) {
-            mName.setError(getString(R.string.error_field_required));
-            focusView = mName;
+            mNameView.setError(getString(R.string.error_field_required));
+            focusView = mNameView;
             cancel = true;
         }
 

@@ -2,8 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.edu.ifspsaocarlos.sdm.postcardcollection">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    
     <application
         android:allowBackup="true"
         android:icon="@mipmap/mailing"
@@ -12,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".View.LoginActivity"
+            android:name=".view.login.LoginActivity"
             android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,9 +26,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".View.MainActivity"
+            android:name=".view.MainActivity"
             android:label="@string/title_activity_main" />
-        <activity android:name=".View.CreateAccountActivity"></activity>
+        <activity android:name=".view.login.CreateAccountActivity" />
+        <activity android:name=".view.EditPostcardActivity" />
     </application>
 
 </manifest>
