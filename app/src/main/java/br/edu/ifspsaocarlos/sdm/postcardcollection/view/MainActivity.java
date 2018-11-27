@@ -16,16 +16,19 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import br.edu.ifspsaocarlos.sdm.postcardcollection.R;
+import br.edu.ifspsaocarlos.sdm.postcardcollection.utils.SessionUtils;
 import br.edu.ifspsaocarlos.sdm.postcardcollection.view.login.LoginActivity;
 import br.edu.ifspsaocarlos.sdm.postcardcollection.view.dummy.DummyContent;
+
+import static br.edu.ifspsaocarlos.sdm.postcardcollection.utils.SessionUtils.USER_ID;
 
 public class MainActivity extends AppCompatActivity implements PostcardFragment.OnListFragmentInteractionListener {
 
     private FirebaseAuth mAuth;
-    static public FirebaseUser currentUser;
+    private FirebaseUser currentUser;
     private FrameLayout mMainFrame;
     Fragment collectionFragment = new PostcardFragment();
-    Fragment addItemFragment = new AddPostcardFragment();
+    //Fragment addItemFragment = new AddPostcardFragment();
     Fragment dashboardFragment = new DashboardFragment();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -39,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements PostcardFragment.
                     setFragment(dashboardFragment);
                     return true;
                 case R.id.navigation_add_item:
-                    setFragment(addItemFragment);
+                    //setFragment(addItemFragment);
+                    openPostcardActivity();
                     return true;
                 case R.id.navigation_collection:
                     setFragment(collectionFragment);
@@ -57,6 +61,12 @@ public class MainActivity extends AppCompatActivity implements PostcardFragment.
 
     }
 
+    private void openPostcardActivity() {
+        Intent intent = new Intent(MainActivity.this, EditPostcardActivity.class);
+        intent.putExtra(USER_ID, currentUser.getUid());
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +78,6 @@ public class MainActivity extends AppCompatActivity implements PostcardFragment.
 
         this.mAuth = FirebaseAuth.getInstance();
         mMainFrame = findViewById(R.id.main_content);
-
-        setFragment(dashboardFragment);
     }
 
     @Override
@@ -77,22 +85,30 @@ public class MainActivity extends AppCompatActivity implements PostcardFragment.
         super.onStart();
 
         this.currentUser = mAuth.getCurrentUser();
+
         // Se o usuário ainda não está logado, redireciona para o Login
         if (currentUser == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
+            //finish();
         } else {
             // se já está logado, continua nesta tela
             //mTextMessage.setText(getString(R.string.title_home) + " User: " + currentUser.getEmail());
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            setFragment(dashboardFragment);
         }
     }
 
     @Override
     protected void onStop() {
-        // TODO: oferecer SignOut ao usuário em algum lugar
-        //this.mAuth.signOut();
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // TODO: oferecer SignOut ao usuário em algum lugar
+        this.mAuth.signOut();
+        super.onDestroy();
     }
 
     @Override

@@ -41,4 +41,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="click_to_add_photo">Click to open camera</string>
     <string name="postcard_picture">Postcard picture</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="postcard_title">Postcard Title</string>
+    <string name="postcard_country">Country of Origin</string>
+    <string name="save_postcard">Save</string>
 </resources>

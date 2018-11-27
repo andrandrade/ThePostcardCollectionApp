@@ -5,4 +5,5 @@
     <dimen name="normalText_fontSize">16sp</dimen>
     <dimen name="square_photo_width">120dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="button_height">52dp</dimen>
 </resources>
