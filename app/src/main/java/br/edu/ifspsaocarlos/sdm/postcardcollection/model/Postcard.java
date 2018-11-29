@@ -2,28 +2,34 @@ package br.edu.ifspsaocarlos.sdm.postcardcollection.model;
 
 import android.graphics.Bitmap;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-import br.edu.ifspsaocarlos.sdm.postcardcollection.R;
 
 public class Postcard {
     private long userId;
-    private Bitmap image;
+    private long postcardId;
+    private String imageUrl;
     private String title;
     private String countryOfOrigin;
     private String cityOfOrigin;
     private String sender;
-    private Date dateOfAcquisition;
+    private String dateOfAcquisition;
     private String tags;
 
     public Postcard() {
     }
 
-//    public Postcard(){
-//
-//    }
+    public Postcard(long userId, long postcardId, String imageUrl, String title, String countryOfOrigin,
+                    String cityOfOrigin, String sender, String dateOfAcquisition, String tags) {
+        this.userId = userId;
+        this.postcardId = postcardId;
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.countryOfOrigin = countryOfOrigin;
+        this.cityOfOrigin = cityOfOrigin;
+        this.sender = sender;
+        this.dateOfAcquisition = dateOfAcquisition;
+        this.tags = tags;
+    }
 
     public long getUserId() {
         return userId;
@@ -33,12 +39,20 @@ public class Postcard {
         this.userId = userId;
     }
 
-    public Bitmap getImage() {
-        return image;
+    public long getPostcardId() {
+        return postcardId;
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
+    public void setPostcardId(long postcardId) {
+        this.postcardId = postcardId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {
@@ -73,11 +87,11 @@ public class Postcard {
         this.sender = sender;
     }
 
-    public Date getDateOfAcquisition() {
+    public String getDateOfAcquisition() {
         return dateOfAcquisition;
     }
 
-    public void setDateOfAcquisition(Date dateOfAcquisition) {
+    public void setDateOfAcquisition(String dateOfAcquisition) {
         this.dateOfAcquisition = dateOfAcquisition;
     }
 

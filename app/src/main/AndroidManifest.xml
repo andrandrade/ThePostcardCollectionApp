@@ -20,25 +20,29 @@
         android:theme="@style/AppTheme">
 
         <activity
-        android:name=".view.login.LoginActivity"
-        android:label="@string/title_activity_login"
-        android:screenOrientation="portrait"
-        android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
+            android:name=".view.login.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
 
+        <activity android:name=".view.login.CreateAccountActivity" />
+
         <activity
-        android:name=".view.MainActivity"
-        android:label="@string/title_activity_main" >
+            android:name=".view.MainActivity"
+            android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.login.CreateAccountActivity" />
-        <activity android:name=".view.EditPostcardActivity" />
+        <activity
+            android:name=".view.EditPostcardActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
 
-        <!-- FileProvider - a ContentProvider for making the image file securely available to the other end -->
+        <!-- FileProvider - a ContentProvider for making the imageUrl file securely available to the other end -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="br.edu.ifspsaocarlos.fileprovider"

@@ -44,6 +44,9 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="postcard_title">Postcard Title</string>
-    <string name="postcard_country">Country of Origin</string>
+    <string name="postcard_city">City of origin</string>
+    <string name="postcard_country">Country</string>
+    <string name="postcard_date">Acquisition date</string>
     <string name="save_postcard">Save</string>
+    <string name="postcard_info">Tags</string>
 </resources>

@@ -28,6 +28,7 @@ public class MyPostcardRecyclerViewAdapter extends RecyclerView.Adapter<MyPostca
     private final OnListFragmentInteractionListener mListener;
     private final Context mContext;
 
+
     public MyPostcardRecyclerViewAdapter(Context context, List<DummyItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
@@ -50,9 +51,6 @@ public class MyPostcardRecyclerViewAdapter extends RecyclerView.Adapter<MyPostca
         holder.mItem = mValues.get(position);
 
         //TODO: setar a url real de cada imagem
-//        holder.mImageView.setImageURI(mValues.get(position).photourl));
-//        holder.mImageView.setImageResource(R.mipmap.postcard_1);
-
 //        Glide.with(myFragment)
 //                .load(url)
 //                .centerCrop()
@@ -65,7 +63,6 @@ public class MyPostcardRecyclerViewAdapter extends RecyclerView.Adapter<MyPostca
                 .into(holder.mImageView);
                 //.placeholder(R.drawable.ic_crop_original_black_24dp)
                 // Por que não consigo usar?
-
 
         holder.mTitleView.setText(mValues.get(position).content);
         holder.mContentView.setText(mValues.get(position).details);
@@ -87,7 +84,8 @@ public class MyPostcardRecyclerViewAdapter extends RecyclerView.Adapter<MyPostca
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public final View mView;                // CardView
         public final ImageView mImageView;      // Foto do postal
         public final TextView  mTitleView;       // Título
@@ -106,5 +104,7 @@ public class MyPostcardRecyclerViewAdapter extends RecyclerView.Adapter<MyPostca
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
         }
+
     }
+
 }

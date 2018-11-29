@@ -4,6 +4,7 @@ public class SessionUtils {
     public static final String TAG = "PostcardApp";
     public static final String USER_ID = "UserId";
     public static final String POSTCARD_ID = "PostcardId";
+    public static final String POSTCARD_OBJ = "PostcardObj";
 
     private static String currentUserId;
 

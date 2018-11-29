@@ -10,6 +10,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,6 +21,8 @@ import br.edu.ifspsaocarlos.sdm.postcardcollection.utils.SessionUtils;
 import br.edu.ifspsaocarlos.sdm.postcardcollection.view.login.LoginActivity;
 import br.edu.ifspsaocarlos.sdm.postcardcollection.view.dummy.DummyContent;
 
+import static br.edu.ifspsaocarlos.sdm.postcardcollection.utils.SessionUtils.POSTCARD_ID;
+import static br.edu.ifspsaocarlos.sdm.postcardcollection.utils.SessionUtils.POSTCARD_OBJ;
 import static br.edu.ifspsaocarlos.sdm.postcardcollection.utils.SessionUtils.USER_ID;
 
 public class MainActivity extends AppCompatActivity implements PostcardFragment.OnListFragmentInteractionListener {
@@ -113,6 +116,12 @@ public class MainActivity extends AppCompatActivity implements PostcardFragment.
 
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
+        Toast.makeText(getApplicationContext(), "Um item da lista foi clicado: " + item.content, Toast.LENGTH_SHORT).show();
 
+        Intent intent = new Intent(getApplicationContext(), EditPostcardActivity.class);
+        intent.putExtra(USER_ID, SessionUtils.getCurrentUserId());
+        intent.putExtra(POSTCARD_ID, Long.valueOf(108));
+        intent.putExtra(POSTCARD_OBJ, item);
+        startActivityForResult(intent, 2);  //TODO: criar códigos para requests
     }
 }

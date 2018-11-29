@@ -1,6 +1,7 @@
 package br.edu.ifspsaocarlos.sdm.postcardcollection.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,8 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import br.edu.ifspsaocarlos.sdm.postcardcollection.R;
+import br.edu.ifspsaocarlos.sdm.postcardcollection.utils.SessionUtils;
 import br.edu.ifspsaocarlos.sdm.postcardcollection.view.dummy.DummyContent;
 import br.edu.ifspsaocarlos.sdm.postcardcollection.view.dummy.DummyContent.DummyItem;
+
+import static br.edu.ifspsaocarlos.sdm.postcardcollection.utils.SessionUtils.POSTCARD_ID;
+import static br.edu.ifspsaocarlos.sdm.postcardcollection.utils.SessionUtils.POSTCARD_OBJ;
+import static br.edu.ifspsaocarlos.sdm.postcardcollection.utils.SessionUtils.USER_ID;
 
 /** A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener} interface. */
@@ -22,7 +28,7 @@ public class PostcardFragment extends Fragment {
     // Parâmetros passados na criação do Fragment
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 3;
-
+    private MyPostcardRecyclerViewAdapter adapter;
     private OnListFragmentInteractionListener mListener;
 
     /* Mandatory empty constructor for the fragment manager to instantiate the
@@ -59,7 +65,7 @@ public class PostcardFragment extends Fragment {
 
         // Configurando o RecyclerView...
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();    // RecyclerView ou Fragment?
+            final Context context = view.getContext();    // RecyclerView ou Fragment?
             RecyclerView recyclerView = (RecyclerView) view;
 
             // Configura o LayoutManager do RecyclerView:
@@ -69,8 +75,10 @@ public class PostcardFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             // Configura o Adapter que vai cuidar dos dados para o RecyclerView:
-            recyclerView.setAdapter(new MyPostcardRecyclerViewAdapter(context, DummyContent.ITEMS, mListener));
+
             // context: vamos tentar assim..
+            adapter = new MyPostcardRecyclerViewAdapter(context, DummyContent.ITEMS, mListener);
+            recyclerView.setAdapter(adapter);
         }
         return view;
     }
@@ -81,6 +89,7 @@ public class PostcardFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
+
         } else {
             Toast.makeText(context, "Collection Fragment Attached", Toast.LENGTH_SHORT).show();
             //throw new RuntimeException(context.toString()
@@ -104,7 +113,6 @@ public class PostcardFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
-
 
     }
 }
